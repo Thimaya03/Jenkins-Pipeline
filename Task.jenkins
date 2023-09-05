@@ -87,7 +87,12 @@ pipeline {
                 echo "End of process"
             }
         }
-
+       
+         stage('New Build'){
+            steps{
+                echo "Compile and package code using build automation tool - Gradle"
+            }
+        }
         
     }
 
