@@ -81,6 +81,18 @@ pipeline {
                 echo "Process is verfied!!"
             }
         }
+
+        stage('End'){
+            steps{
+                echo "End of process"
+            }
+        }
+
+        stage('End'){
+            steps{
+                echo "End of process"
+            }
+        }
         
     }
 
