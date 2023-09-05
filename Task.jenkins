@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                 echo "Compile and package code using build automation tool - Maven"
+            }
+        }
+
+        stage('Unit and Integration Tests') {
+            steps {
+                 echo "Run unit tests to ensure the code functions, using test automation tool - JUnit. Run integration tests to ensure components of the application work together, using test automation tool - TestNG"
+            }
+            post {
+                failure {
+                      mail to: "thimaya.dassanayake@gmail.com",
+                      subject: "Test status: ${currentBuild.result}",
+                      body: "Build was Failed! ${env.BUILD_URL}"
+                      }
+                success {
+                      mail to: "thimaya.dassanayake@gmail.com",
+                      subject: "Test status: ${currentBuild.result}",
+                      body: "Build was Successful! ${env.BUILD_URL}"
+                     
+                    }
+                }
+            }
+            
+        stage('Code Analysis') {
+            steps {
+                echo "Analyse the code and ensure it meets industry standards by integrating code analysis tool - SonarQube"
+                }
+            }
+        
+        stage('Security Scan') {
+            steps {
+               echo "Perform a security scan on the code to identify any vulnerabilities using security testing tool - OWASP ZAP"
+            }
+            post {
+                failure {
+                      mail to: "thimaya.dassanayake@gmail.com",
+                      subject: "Security Scan status: ${currentBuild.result}",
+                      body: "Security scan was Failed! ${env.BUILD_URL}"
+                    }
+                success {
+                      mail to: "thimaya.dassanayake@gmail.com",
+                      subject: "Security Scan status: ${currentBuild.result}",
+                      body: "Security scan was Successful! ${env.BUILD_URL}"
+                      
+                    }
+                }
+
+            }
+
+
+        stage('Deploy to Staging') {
+            steps {
+               echo "Deploy the application to staging server - AWS EC2"
+            }
+        }
+
+        stage('Integration Tests on Staging') {
+            steps {
+                echo "Ensure the application functions in a production-like environment by running integration tests on the staging environment, using tool - Selenium."
+            }
+        }
+
+        stage('Deploy to Production') {
+            steps {
+               echo "Deploy the application to production server - AWS EC2"
+            }
+        }
+    }
+
+ }
+
+
